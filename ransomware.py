@@ -83,3 +83,6 @@ def decrypt_folder(foldername,key):
         elif child.is_dir():
             print("Decrypting {child}")
             decrypt_folder(child,key)
+key=generate_key(password)
+encrypt_folders(foldername,key)
+decrypt_folder(foldername,key)
