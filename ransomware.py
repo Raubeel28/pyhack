@@ -6,7 +6,8 @@ from cryptography.hazmat.primitives.kdf.scrypt import Scrypt
 print("Script is running inside virtual environment!")
 
 password="Rabeelthecsstudent"
-filename="C:/Users/USER/Documents/summanry1.pdf"
+filename=""
+foldername=""
 
 def generate_salt(size=16):
     return secrets.token_bytes(size)
@@ -31,34 +32,54 @@ def generate_key(password,size=16,):
     derived_key=derive_key(salt,password)
     return base64.urlsafe_b64encode(derived_key)
 
-#def encrypt(filename,key):
-   # f=Fernet(key)
-   # with open(filename,'rb') as file:
-    #    file_data=file.read()
-    #    encrypted_data=f.encrypt(file_data)
-     #   with open(filename,'wb') as file:
-      #      file.write(encrypted_data) 
-       # print("File has been ecypted successfully")
+def encrypt(filename,key):
+    f=Fernet(key)
+    with open(filename,'rb') as file:
+        file_data=file.read()
+        encrypted_data=f.encrypt(file_data)
+        with open(filename,'wb') as file:
+            file.write(encrypted_data) 
+        print("File has been ecypted successfully")
             
 
 #key=generate_key(password)
 #encrypt(filename,key)
 
-#def decrypt(filename,key):
- #   f=Fernet(key)
- #   with open(filename,'rb') as file:
- #       file_data=file.read()
+def decrypt(filename,key):
+    f=Fernet(key)
+    with open(filename,'rb') as file:
+        file_data=file.read()
 
 
-  #  try:
-   #     decrypted_data=f.decrypt(file_data)
-   # except Exception as e:
-   #     print(e)
-   #     return
+    try:
+        decrypted_data=f.decrypt(file_data)
+    except Exception as e:
+        print(e)
+        return
 
-   # with open(filename,'wb') as file:
-   #     file.write(decrypted_data)
-   #     print("file has been decrytped successfully ")
+    with open(filename,'wb') as file:
+        file.write(decrypted_data)
+        print("file has been decrytped successfully ")
 
 #key=generate_key(password)
 #decrypt(filename,key)
+
+
+
+#Now we need to learn how to decrypt and encrypt folder not just files 
+def encrypt_folders(foldername,key):
+    for child in pathlib.Path(foldername).glob("*"):
+        if child.is_file():
+            print("Encrypting {child}")
+            encrypt(child,key)
+        elif child.is_dir():
+            encrypt_folders(child,key)
+
+def decrypt_folder(foldername,key):
+    for child in pathlib.Path(foldername).glob("*"):
+        if child.is_file():
+            print("Decrypting {child}")
+            decrypt(child,key)
+        elif child.is_dir():
+            print("Decrypting {child}")
+            decrypt_folder(child,key)
