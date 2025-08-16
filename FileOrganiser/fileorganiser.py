@@ -13,14 +13,18 @@ FILE_CATEGORIES = {
     "Executables & Installers": ['.exe', '.msi', '.dmg', '.pkg'],
     "Other": [] # This is a fallback for any file type not listed above.
 }
-target_paths=["C:\\Users\\USER\\Downloads","C:\\Users\\USER\\Documents"]
+home_dir=os.path.expanduser('~')
+target_paths=[
+    os.path.join(home_dir,"Downloads"),
+    os.path.join(home_dir,"Documents")
+]
 
 def organize_files(path):
         print('Started the organization')
         
 
         try:
-            list_of_entries=os.listdir(path)
+            list_of_entries=os.scandir(path)
         except Exception as e:
             print('File was not found,{e}')
             return
@@ -28,14 +32,14 @@ def organize_files(path):
 
         for entry in list_of_entries:
             entry_path=os.path.join(path,entry)
-            if os.path.isdir(entry_path):
+            if os.path.isdir(entry_path) and not entry in FILE_CATEGORIES:
                 organize_files(entry_path)
 
             elif os.path.isfile(entry_path):
                 try:
                     file_extension=os.path.splitext(entry)[1].lower()
                 except Exception as e:
-                    file_extension=" "
+                    file_extension=""
                 destination_folder_name='Other'
             
                 for foldername,extensions in FILE_CATEGORIES.items():
