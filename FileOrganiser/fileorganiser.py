@@ -13,7 +13,8 @@ FILE_CATEGORIES = {
     "Executables & Installers": ['.exe', '.msi', '.dmg', '.pkg'],
     "Other": [] # This is a fallback for any file type not listed above.
 }
-target_path="C:\\Users\\USER\\Downloads"
+target_paths=["C:\\Users\\USER\\Downloads","C:\\Users\\USER\\Documents"]
+
 def organize_files(path):
         print('Started the organization')
         
@@ -49,6 +50,8 @@ def organize_files(path):
                     shutil.move(entry_path,destination_folder_path)
                 except Exception as e:
                     print(f'Could not move {entry_path} to {destination_folder_path}')
-        print("All file has been arranged")
+        
 if __name__=="__main__":
-    organize_files(target_path)
+    for target_path in target_paths:
+        organize_files(target_path)
+        print("finished organizing the files")
