@@ -31,11 +31,11 @@ def organize_files(path):
 
 
         for entry in list_of_entries:
-            entry_path=os.path.join(path,entry)
-            if os.path.isdir(entry_path) and not entry in FILE_CATEGORIES:
+            entry_path=entry.path
+            if entry.is_dir() and not entry.name in FILE_CATEGORIES:
                 organize_files(entry_path)
 
-            elif os.path.isfile(entry_path):
+            elif entry.is_file():
                 try:
                     file_extension=os.path.splitext(entry)[1].lower()
                 except Exception as e:
@@ -48,8 +48,8 @@ def organize_files(path):
                         break
                 destination_folder_path=os.path.join(path,destination_folder_name)
 
-                if not os.path.exists(destination_folder_path):
-                    os.makedirs(destination_folder_path)
+                
+                os.makedirs(destination_folder_path,exist_ok=True)
                 try:
                     shutil.move(entry_path,destination_folder_path)
                 except Exception as e:
